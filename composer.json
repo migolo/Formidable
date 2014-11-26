@@ -1,6 +1,6 @@
 {
-    "name": "gregwar/formidable",
-    "description": "Formidable, the pragmatic forms library",
+    "name": "migolo/formidable",
+    "description": "Formidable, the pragmatic forms library / Migolo Custom Branch",
     "keywords": ["forms", "fields", "input", "html"],
     "homepage": "https://gregwar.com/Formidable/",
     "license": "MIT",
@@ -9,6 +9,10 @@
             "name": "Grégoire Passault",
             "email": "g.passault@gmail.com",
             "homepage": "http://www.gregwar.com/"
+        }, {
+            "name": "Miguel Gonzalez",
+            "email": "migolo10@gmail.com",
+            "homepage": "http://www.migolo.net/"
         }
     ],
     "require": {
