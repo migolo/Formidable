@@ -185,23 +185,28 @@ abstract class Field extends LanguageAware
             return array('read_only', $this->printName());
         }
 
-        if (null === $this->value || '' === $this->value) {
+        if (empty($this->value)) {
             if ($this->required) {
                 return array('value_required', $this->printName());
             }
+            // Minimum length
+            if ($this->minlength && 0 < $this->minlength) {
+                return array('at_least', $this->printName(), $this->minlength);
+            }
+
         } else {
-            // Expressions régulière
+            // Expresiones regulares
             if ($this->regex) {
                 if (!preg_match('/'.$this->regex.'/mUsi', $this->value)) {
                     return array('bad_format', $this->printName());
                 }
             }
 
-            // Longueur minimum et maximum
+            // Minimum length
             if ($this->minlength && strlen($this->value) < $this->minlength) {
                 return array('at_least', $this->printName(), $this->minlength);
             }
-
+            // Maximum length
             if ($this->maxlength && strlen($this->value) > $this->maxlength) {
                 return array('not_more', $this->printName(), $this->maxlength);
             }
