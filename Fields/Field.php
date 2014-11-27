@@ -178,7 +178,7 @@ abstract class Field extends LanguageAware
 
     public function requiredCheck(){
         $result = false;
-        if(empty(trim($this->value))){
+        if(null === $this->value || '' === trim($this->value)){
             $result = true;
         }
         return $result;
