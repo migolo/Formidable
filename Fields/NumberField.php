@@ -7,8 +7,8 @@ namespace Gregwar\Formidable\Fields;
  *
  * @author Grégoire Passault <g.passault@gmail.com>
  */
-class NumberField extends Field
-{
+class NumberField extends Field {
+
     /**
      * Field type
      */
@@ -29,20 +29,17 @@ class NumberField extends Field
      */
     protected $step = 'any';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->attributes['step'] = $this->step;
     }
 
-    public function __sleep()
-    {
+    public function __sleep() {
         return array_merge(parent::__sleep(), array(
             'min', 'max', 'step'
         ));
     }
 
-    public function push($name, $value = null)
-    {
+    public function push($name, $value = null) {
         switch ($name) {
             case 'min':
                 $this->min = $value;
@@ -61,13 +58,17 @@ class NumberField extends Field
         parent::push($name, $value);
     }
 
-    public function check()
-    {
+    public function fix() {
+        parent::fix();
+        $this->value = self::tofloat($this->value);
+    }
+
+    public function check() {
         if (!$this->required && !$this->value) {
             return;
         }
-
-        if ($error = parent::check()) {
+        $error = parent::check();
+        if ($error !== null) {
             return $error;
         }
 
@@ -88,13 +89,43 @@ class NumberField extends Field
         }
 
         if ($this->step != 'any') {
-            $step = abs((float)$this->step);
-            $value = abs((float)$this->value);
-            $factor = round($value/$step)*$step;
-            $delta = $value-$factor;
+            $step = abs((float) $this->step);
+            $value = abs((float) $this->value);
+            $factor = round($value / $step) * $step;
+            $delta = $value - $factor;
             if ($delta > 0.00001) {
                 return array('number_step', $this->printName(), $this->step);
             }
         }
     }
+
+    static function tofloat($num) {
+        if (is_numeric($num)) {
+            return floatval($num);
+        }
+        $vector = 1;
+        if ($num[0] == "(" && $num[strlen($num) - 1] == ")") {
+            $vector = -1;
+        }
+
+        $dotPos = strrpos($num, '.');
+        $commaPos = strrpos($num, ',');
+
+        $sep = false;
+
+        if (($dotPos > $commaPos) && $dotPos) {
+            $sep = $dotPos;
+        } elseif (($commaPos > $dotPos) && $commaPos) {
+            $sep = $commaPos;
+        } else {
+            $sep = false;
+        }
+
+        if (!$sep) {
+            return $vector * floatval(preg_replace("/[^0-9-+]/", "", $num));
+        }
+
+        return $vector * floatval(preg_replace("/[^0-9-+]/", "", substr($num, 0, $sep)) . '.' . preg_replace("/[^0-9]/", "", substr($num, $sep + 1, strlen($num))));
+    }
+
 }
