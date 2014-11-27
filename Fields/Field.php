@@ -176,7 +176,7 @@ abstract class Field extends LanguageAware
         return $this->name;
     }
 
-    public function isRequiredCheck(){
+    public function requiredCheck(){
         $result = false;
         if(empty(trim($this->value))){
             $result = true;
@@ -195,7 +195,7 @@ abstract class Field extends LanguageAware
 
         if (null === $this->value || '' === trim($this->value)) {
             if ($this->required) {
-                if(!$this->isRequiredCheck()){
+                if(!$this->requiredCheck()){
                     return array('value_required', $this->printName());
                 }
                 
