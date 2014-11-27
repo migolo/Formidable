@@ -185,6 +185,15 @@ abstract class Field extends LanguageAware
     } 
 
     /**
+     * Fix the Value
+     */
+    
+    public function fix(){
+        $this->value = trim($this->value);
+    }
+    
+
+    /**
      * Constraints check
      */
     public function check()
