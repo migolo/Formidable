@@ -176,6 +176,14 @@ abstract class Field extends LanguageAware
         return $this->name;
     }
 
+    public function isRequiredCheck(){
+        $result = false;
+        if(empty(trim($this->value))){
+            $result = true;
+        }
+        return $result;
+    } 
+
     /**
      * Constraints check
      */
@@ -185,9 +193,12 @@ abstract class Field extends LanguageAware
             return array('read_only', $this->printName());
         }
 
-        if (empty($this->value)) {
+        if (null === $this->value || '' === trim($this->value)) {
             if ($this->required) {
-                return array('value_required', $this->printName());
+                if(!$this->isRequiredCheck()){
+                    return array('value_required', $this->printName());
+                }
+                
             }
             // Minimum length
             if ($this->minlength && 0 < $this->minlength) {
