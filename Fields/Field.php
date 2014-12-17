@@ -190,6 +190,7 @@ abstract class Field extends LanguageAware
     
     public function fix(){
         $this->value = trim($this->value);
+        $this->value = htmlspecialchars($this->value);
     }
     
 
