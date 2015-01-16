@@ -99,7 +99,7 @@ class NumberField extends Field {
         }
     }
 
-    static function tofloat($num) {
+    public static function tofloat($num) {
         if (is_numeric($num)) {
             return floatval($num);
         }
