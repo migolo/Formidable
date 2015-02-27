@@ -103,11 +103,14 @@ class NumberField extends Field {
         if (is_numeric($num)) {
             return floatval($num);
         }
+        if(empty($num)){
+            return 0;
+        }
         $vector = 1;
         if ($num[0] == "(" && $num[strlen($num) - 1] == ")") {
             $vector = -1;
         }
-
+        //die();
         $dotPos = strrpos($num, '.');
         $commaPos = strrpos($num, ',');
 
